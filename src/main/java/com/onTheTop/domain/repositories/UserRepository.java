@@ -1,4 +1,4 @@
 package com.onTheTop.domain.repositories;
 
-public class userRepositories {
+public interface UserRepository {
 }

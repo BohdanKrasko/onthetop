@@ -1,5 +1,9 @@
 package com.onTheTop.domain.model;
 
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.experimental.FieldDefaults;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,10 +13,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "role")
+@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    Long id;
     @Column(name = "role_name")
     String roleName;
 }
