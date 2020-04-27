@@ -28,6 +28,5 @@ public class User {
     String name;
     @Column(name = "last_name")
     String lastName;
-    //TODO add List<Role>
 
 }
