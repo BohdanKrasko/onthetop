@@ -2,7 +2,7 @@ package com.onTheTop.services;
 
 import com.onTheTop.api.rest.dto.UserRequest;
 import com.onTheTop.api.rest.dto.UserResponse;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Page;
 
 public interface UserService {
 
@@ -10,7 +10,7 @@ public interface UserService {
 
     UserResponse getUser(Long id);
 
-    UserResponse getAllUser();
+    Page<UserResponse> getAllUser();
 
     UserResponse updateUser(UserRequest request, Long id);
 

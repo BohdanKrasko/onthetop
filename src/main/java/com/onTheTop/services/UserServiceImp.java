@@ -3,10 +3,15 @@ package com.onTheTop.services;
 import com.onTheTop.api.rest.dto.UserRequest;
 import com.onTheTop.api.rest.dto.UserResponse;
 import com.onTheTop.domain.repositories.UserRepository;
+import com.onTheTop.exceptions.NotFoundExeption;
 import com.onTheTop.mapping.UserMapper;
+import com.onTheTop.mapping.UserMapperImpl;
+import com.onTheTop.services.specification.UserGetAllSpecification;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,26 +20,29 @@ public class UserServiceImp implements UserService {
 
     UserRepository userRepository;
     UserMapper userMapper;
+    UserGetAllSpecification userGetAllSpecification;
 
     @Autowired
-    public UserServiceImp(UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImp(UserRepository userRepository, UserGetAllSpecification userGetAllSpecification) {
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
+        this.userGetAllSpecification = userGetAllSpecification;
+        this.userMapper = new UserMapperImpl();
     }
 
     @Override
     public UserResponse addUser(UserRequest request) {
-        return null;
+        return userMapper.toResponse(userRepository.save(userMapper.toEntity(request)));
     }
 
     @Override
     public UserResponse getUser(Long id) {
-        return null;
+        return userRepository.findById(id).map(userMapper::toResponse).orElseThrow(NotFoundExeption::new);
     }
 
     @Override
-    public UserResponse getAllUser() {
-        return null;
+    public Page<UserResponse> getAllUser() {
+
+        return userRepository.findAll(userGetAllSpecification.getSpecification(), Pageable.unpaged()).map(userMapper::toResponse);
     }
 
     @Override
